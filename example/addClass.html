@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery</title>
+</head>
+
+<body>
+    <ul>
+        <li>list item 1</li>
+        <li>list item 2</li>
+        <li>list item 3</li>
+    </ul>
+    <p>a paragraph</p>
+
+    <h2 class="abcd def">dsad</h2>
+    <h2>dsad</h2>
+    <h2>dsad</h2>
+
+    <script src="jquery.js"></script>
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+
+        //1.字符串
+        // $('h2').addClass('open')
+        // s('h2').addClass('open')
+        // d('h2').addClass('open')
+
+
+
+        //2.数组
+        // $('h2').addClass(['abcd', 0, 2, 3])
+        // s('h2').addClass(['abcd', 0, 2, 3]);不支持
+        // d('h2').addClass(['abcd', 0, 2, 3])
+
+
+
+        // //3.函数
+        // $(['1', 3, 4]).addClass(function (index, currentClassName) {
+        //     console.log(index, currentClassName, this);
+
+        //     //内部可以返回字符串
+        //     // return 'aa bb cc'
+
+        //     //内部可以返回数组
+        //     return ['a', 'b', 'c']
+
+        // })
+
+        // s(['1', 3, 4]).addClass(function (index, currentClassName) {
+        //     console.log(index, currentClassName, this);
+        //     return 'aa bb cc'
+        //     // return ['a', 'b', 'c']
+
+        // })
+
+
+        d('h2').addClass(function (index, currentClassName) {
+            console.log(index, currentClassName, this);
+
+            return 'aa bb cc'
+            // return ['a', 'b', 'c']
+
+        })
+
+        // u(['1', 'q', 4]).addClass(function (index, currentClassName) {
+        //     console.log(index, currentClassName, this);
+
+        //     return 'aa bb cc'
+        //     // return ['a', 'b', 'c']
+
+        // })
+
+
+    </script>
+
+
+</body>
+
+</html>

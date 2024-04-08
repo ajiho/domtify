@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h2>h2</h2>
+    <p>dsada</p>
+
+    <script src="../dist/domtify.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/umbrellajs/umbrella.js"></script>
+    <script>
+
+
+        //1.选择器
+        console.log(d('p').add('p'));
+
+
+        //2.elements
+        console.log(d('p').add(document.getElementsByTagName('h2')));
+
+
+        //3.html
+        console.log(d('p').add(`<h2>dsad</h2>`));
+
+
+
+        //4.jQuery对象
+        console.log(d('p').add(d('h2')));
+
+    </script>
+</body>
+
+</html>

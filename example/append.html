@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <h2>h2-1</h2>
+    <p>ppp</p>
+    <div class="container">
+        <div class="inner">Hello</div>
+        <div class="inner">Goodbye</div>
+    </div>
+
+
+
+
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+
+
+
+
+
+
+        //1.支持html字符串
+        // $(".inner").append("<p>Test2222</p>", '123')
+        // d(".inner").append("<p>Test2222</p>",'123')
+
+
+
+
+
+        //2.支持元素
+        // $(".inner").append(document.getElementsByTagName('p'));
+        // $(".inner").append($('h2'));
+        // d(".inner").append(d('h2'),d('p'));
+        // d(".inner").append(document.getElementsByTagName('p'));
+
+
+
+        //3.支持文本节点
+        // $(".inner").append(document.createTextNode(`<h3>Greetings</h3>`));
+        // d(".inner").append(document.createTextNode(`<h3>Greetings</h3>`));
+        // d(".inner").append('abcd','weq');
+
+
+        const div = document.createElement('div');
+        div.insertAdjacentHTML('beforeend', '<p>动态的p</p>')
+
+        const div2 = document.createElement('div');
+        div.insertAdjacentHTML('beforeend', '<p>动态的p1</p>')
+
+
+        //4.支持数组,数组的话就是这些了。。
+        // $(".inner").append(['123', '123', $('h3'), document.getElementsByTagName('p'), div.firstChild, div2.firstChild, $('h2'), $('h2'), $('h2')]);
+        // d(".inner").append(['123', '123', d('h3'), document.getElementsByTagName('p'), div.firstChild, div2.firstChild, d('h2'), d('h2'), d('h2')]);
+        // cash(".inner").append('123');
+
+        // document.querySelectorAll
+
+        // document.querySelectorAll('p')
+
+        //5.支持实例对象
+        // $(".inner").append($('h2'));
+        // d(".inner").append(d('h2'));
+
+
+        //6.支持多个参数
+        // $(".inner").append($('h3'), $('h4'));
+        // d(".inner").append('dddff', 'abcd');
+
+
+
+
+        //7.支持函数
+        // $(".inner").append(function (index, html) {
+
+        //     console.log(index, html, this);
+
+        //     // return 'abcd'
+        //     return document.getElementsByTagName('p');
+
+        //     // return ['123','456','<p>Test</p>',document.getElementsByTagName('p'),$('h3')];
+
+        // })
+
+
+
+
+        d(".inner").append(function (index, html) {
+
+            console.log(index, html, this);
+
+            return document.getElementsByTagName('p')
+            // return ['123','456','<p>Test</p>',document.getElementsByTagName('p'),$('h3')];
+
+        })
+
+
+
+    </script>
+</body>
+
+</html>
