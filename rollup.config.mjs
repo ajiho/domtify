@@ -3,9 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel';
 import stripBanner from 'rollup-plugin-strip-banner';
-import pkg from './package.json' assert { type: "json" };
-import getBanner from './build/banner.mjs';
-
+import getBanner,{pkgJson} from './build/banner.mjs';
 
 
 
@@ -37,7 +35,8 @@ if (process.env.NODE_ENV === 'production') {
 const config = [];
 
 
-let file = 'dist/domtify.js'
+
+let file = pkgJson.main
 if (process.env.NODE_ENV === 'production') {
     file = file.replace(/\.js$/, '.min.js')
 }
@@ -48,7 +47,7 @@ const base = {
     sourcemap: true,//方便调试
 }
 
-const input = 'src/js/index.js'
+const input = 'src/index.js'
 
 config.push({
     input,
@@ -62,7 +61,7 @@ config.push({
 })
 
 
-file = pkg.module;
+file = pkgJson.module;
 if (process.env.NODE_ENV === 'production') {
     file = file.replace(/\.js$/, '.min.js')
 }

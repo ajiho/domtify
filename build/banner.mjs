@@ -11,4 +11,7 @@ function getBanner() {
  */\n`;
 }
 
+
+export const pkgJson = pkg;
+
 export default getBanner

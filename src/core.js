@@ -2,7 +2,6 @@ import { isString, isHtmlString, isInstance } from "./utils";
 
 
 
-
 class Domtify {
 
     result = []

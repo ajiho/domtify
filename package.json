@@ -1,32 +1,44 @@
 {
   "name": "domtify",
-  "version": "1.0.0-beta.1",
+  "version": "0.0.0",
   "description": "A lightweight, modern browser-friendly library similar to jQuery.",
   "main": "dist/domtify.js",
   "module": "dist/domtify.esm.js",
   "browser": "dist/domtify.min.js",
   "scripts": {
-    "format": "prettier --config prettier.config.mjs  src/scss/**/*.{js,scss} --check --cache --cache-location .cache/.prettiercache",
-    "format:fix": "prettier --config prettier.config.mjs src/scss/**/*.{js,scss} --write",
-    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=true eslint --config eslint.config.mjs src/js/**/*.js --cache --cache-location .cache/.eslintcache --report-unused-disable-directives",
-    "lint:fix": "cross-env ESLINT_USE_FLAT_CONFIG=true eslint --config eslint.config.mjs src/js/**/*.js  --fix",
-    "format-lint": "run-s format lint",
-    "fix": "run-s lint:fix format:fix",
-    "base": "rollup --config rollup.config.mjs",
-    "min": "cross-env NODE_ENV=production rollup --config rollup.config.mjs",
+    "prettier": "prettier --config prettier.config.mjs  src/**/*.js --check --cache --cache-location .cache/.prettiercache",
+    "prettier:fix": "prettier --config prettier.config.mjs src/**/*.js --write",
+    "eslint": "cross-env ESLINT_USE_FLAT_CONFIG=true eslint --config eslint.config.mjs src/**/*.js --cache --cache-location .cache/.eslintcache --report-unused-disable-directives",
+    "eslint:fix": "cross-env ESLINT_USE_FLAT_CONFIG=true eslint --config eslint.config.mjs src/**/*.js  --fix",
+    "lint": "run-s prettier eslint",
+    "fix": "run-p *:fix",
+    "clean": "rimraf dist",
+    "rollup:base": "cross-env NODE_NO_WARNINGS=1 rollup --config rollup.config.mjs",
+    "rollup:prod": "cross-env NODE_NO_WARNINGS=1 NODE_ENV=production rollup --config rollup.config.mjs",
     "commitlint": "commitlint --config commitlint.config.mjs -e -V",
-    "prepare": "husky",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs",
-    "dist": "run-p base min docs:build"
+    "prepare": "husky || true",
+    "serve": "node build/serve.mjs",
+    "size": "size-limit && gzip-size dist/domtify.min.js",
+    "release": "commit-and-tag-version --header \"# 更新日志\" --releaseCommitMessageFormat \"release: {{currentTag}}\"",
+    "build": "run-s lint clean && run-p rollup:* && npm run size"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ajiho/domtify"
+    "url": "git+https://github.com/ajiho/domtify"
+  },
+  "bugs": {
+    "url": "https://github.com/ajiho/domtify/issues"
   },
   "keywords": [
-    "codepen"
+    "event",
+    "delegate",
+    "delegation"
+  ],
+  "size-limit": [
+    {
+      "limit": "7 KB",
+      "path": "dist/domtify.min.js"
+    }
   ],
   "homepage": "https://github.com/ajiho/domtify",
   "author": "ajiho",
@@ -41,20 +53,22 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
+    "@size-limit/preset-small-lib": "^11.1.2",
+    "@stackblitz/sdk": "^1.9.0",
+    "browser-sync": "^3.0.2",
+    "commit-and-tag-version": "^12.3.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "fs-extra": "^11.2.0",
     "glob": "^10.3.12",
     "globals": "^15.0.0",
+    "gzip-size-cli": "^5.1.0",
     "husky": "^9.0.11",
-    "jquery": "^4.0.0-beta",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
     "rollup": "^4.13.2",
     "rollup-plugin-strip-banner": "^3.1.0",
-    "umbrellajs": "^3.3.2",
-    "vitepress": "^1.0.1",
-    "vitepress-plugin-tabs": "^0.5.0"
+    "size-limit": "^11.1.2"
   }
 }

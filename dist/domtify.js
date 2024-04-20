@@ -1,7 +1,7 @@
 /*!
- * codepencil v0.0.1 (https://github.com/ajiho/codepencil)
+ * domtify v0.0.0 (https://github.com/ajiho/domtify)
  * Copyright 2023-2024 ajiho
- * license MIT(https://github.com/ajiho/codepencil/blob/master/LICENSE)
+ * license MIT(https://github.com/ajiho/domtify/blob/master/LICENSE)
  */
 
 var d = (function () {
