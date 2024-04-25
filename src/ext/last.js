@@ -1,8 +1,6 @@
-import { fn } from "../core";
-import "./eq"
+import { fn } from '../core'
+import './eq'
 
 fn.last = function () {
-    return this.eq(-1)
+  return this.eq(-1)
 }
-
-

@@ -10,9 +10,10 @@
 <body>
 
     <div class="container">
-        <h2>Greetings</h2>
-        <div class="inner">Hello</div>
-        <div class="inner">Goodbye</div>
+        <div class="inner first">Hello</div>
+        <div class="inner second">And</div>
+        <div class="inner third">Goodbye</div>
+        <div class="inner third">Goodbye2</div>
     </div>
 
     <script src="../dist/domtify.js"></script>
@@ -20,13 +21,12 @@
     <script src="jquery.js"></script>
     <script src="umbrella.js"></script>
     <script>
+        // $("div.second").replaceWith("<h2>New heading</h2>");
+        // $( "div.third" ).replaceWith( $( ".first" ) );
 
-        // $( ".inner" ).after( "<p>Test</p>" );
-        // $(".inner").after($('h2'),'123',"<p>Test</p>");
 
-        // d( ".inner" ).after( "<p>Test</p>" );
-        d( ".inner" ).after(d('h2'),"123456","<p>Test</p>");
-
+        // d("div.second").replaceWith("<h2>New heading</h2>");
+        // d( "div.third" ).replaceWith( d( ".first" ) );
 
     </script>
 </body>

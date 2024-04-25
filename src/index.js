@@ -1,4 +1,4 @@
-import { domtify } from "./core";
+import { domtify } from './core'
 import './ext/addClass'
 import './ext/each'
 import './ext/map'
@@ -11,6 +11,9 @@ import './ext/append'
 import './ext/extend'
 import './ext/clone'
 import './ext/add'
-
+import './ext/prepend'
+import './ext/after'
+import './ext/before'
+import './ext/replaceWith'
 
 export default domtify

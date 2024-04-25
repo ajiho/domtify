@@ -81,7 +81,7 @@ fn.each = function (callback) {
 };
 
 fn.addClass = function (className) {
-  const list = res => isArray(res) ? res : isString(res) ? res.split(" ") : [];
+  const list = res => isArray(res) ? res : isString(res) ? res.split(' ') : [];
   let classList = [];
   return this.each((item, index) => {
     var _item$classList;
@@ -162,44 +162,64 @@ const flatArgs = args => {
   });
 };
 
-fn.append = function (...args) {
-  //参数静态化
+function domManip(collection, args, callback, reverse) {
+  //参数静态化不过不这样的话，如果是HTMLCollection如果动态添加后，在遍历的时候它数组长度会改变，遍历逻辑会错乱
   let firstParam = args[0];
   let firstParamIsFunction = isFunction(firstParam);
   let fnResult = {};
-  this.each((item, index) => {
-    if (firstParamIsFunction) {
+  if (firstParamIsFunction) {
+    collection.each((item, index) => {
       fnResult[index] = flatArgs(firstParam.call(item, index, item.textContent));
-    }
-  });
+    });
+  }
   Object.freeze(fnResult); //冻结该对象防止被更改
 
-  let collection = flatArgs(args);
+  let collectiona = flatArgs(args);
+  if (reverse === true) {
+    collectiona = collectiona.reverse();
+  }
   let last = false;
-  return this.each((elem, index) => {
+  return collection.each((elem, index) => {
     if (firstParamIsFunction) {
-      collection = fnResult[index];
+      collectiona = fnResult[index];
+      if (reverse === true) {
+        collectiona = collectiona.reverse();
+      }
     }
-    last = index === this.length - 1 ? true : false;
-    collection.forEach(item => {
+    last = index === collection.length - 1 ? true : false;
+    collectiona.forEach(item => {
+      let temp;
       //1.字符串
       if (isString(item)) {
         if (isHtmlString(item)) {
-          elem.insertAdjacentHTML('beforeend', item);
+          //htmlString
+
+          const tempElement = document.createElement('div');
+          tempElement.innerHTML = item;
+          temp = tempElement.firstElementChild;
         } else {
-          elem.insertAdjacentText('beforeend', item);
+          //textNode
+          temp = document.createTextNode(item);
         }
       } else if (isElem(item) || item instanceof Text) {
         //元素
         if (last === true) {
-          //最后一个目标元素
-          elem.appendChild(item);
+          temp = item;
         } else {
-          elem.appendChild(item.cloneNode(true));
+          temp = item.cloneNode(true);
         }
       }
+
+      //调用方法
+      callback.call(collectiona, elem, temp);
     });
   });
+}
+
+fn.append = function (...args) {
+  return domManip(this, args, function (elem, temp) {
+    elem.appendChild(temp);
+  }, false);
 };
 
 domtify.extend = function () {
@@ -281,6 +301,39 @@ fn.clone = function (deep = false) {
 
 fn.add = function (selector, context) {
   return domtify(arrUnique([...this.get(), ...domtify(selector, context).get()]));
+};
+
+fn.prepend = function (...args) {
+  return domManip(this, args, function (elem, temp) {
+    // console.log(elem, temp);
+
+    elem.insertBefore(temp, elem.firstChild);
+  }, true);
+};
+
+fn.after = function (...args) {
+  return domManip(this, args, function (elem, temp) {
+    if (elem.parentNode) {
+      elem.parentNode.insertBefore(temp, elem.nextSibling);
+    }
+  }, true);
+};
+
+fn.before = function (...args) {
+  return domManip(this, args, function (elem, temp) {
+    if (elem.parentNode) {
+      elem.parentNode.insertBefore(temp, elem);
+    }
+  }, true);
+};
+
+fn.replaceWith = function (...args) {
+  return domManip(this, args, function (elem, temp) {
+    const parent = elem.parentNode;
+    if (parent) {
+      parent.replaceChild(temp, elem);
+    }
+  }, true);
 };
 
 export { domtify as default };

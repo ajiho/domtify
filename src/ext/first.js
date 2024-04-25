@@ -1,9 +1,7 @@
-import { fn } from "../core";
+import { fn } from '../core'
 
-import "./eq"
+import './eq'
 
 fn.first = function () {
-    return this.eq(0)
+  return this.eq(0)
 }
-
-

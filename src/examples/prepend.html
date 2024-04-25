@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h2>Greetings</h2>
+    <div class="container">
+        <div class="inner">Hello</div>
+        <div class="inner">Goodbye</div>
+    </div>
+
+
+    <!-- 
+    <h2>Greetings</h2>
+    <div class="container">
+        <div class="inner">
+            <p>Test</p>
+            Hello
+        </div>
+        <div class="inner">
+            <p>Test</p>
+            Goodbye
+        </div>
+    </div> -->
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="umbrella.js"></script>
+
+    <script>
+
+        // $(".inner").prepend("<p>Test</p>").addClass('open');  
+        // d(".inner").prepend("<p>Test</p>").addClass('open');
+        // d(".inner").prepend(d( "h2" )).addClass('open');
+
+        // $( ".container" ).prepend( $( "h2" ) ,'<p>123</p>','<p>456</p>');
+        // d( ".container" ).prepend( d( "h2" ),'<p>123</p>','<p>456</p>' );
+        // s( ".container" ).prepend( s( "h2" ),'<p>123</p>','<p>456</p>','123' );
+        // u( ".container" ).prepend( u( "h2" ),'abcd' );
+
+
+
+        d(".inner").prepend(function () {
+            return [d("h2"),'<p>123</p>','123']
+        });
+
+        // $(".container").prepend(function () {
+        //     return [$("h2"), '<p>123</p>']
+        // });
+
+
+    </script>
+</body>
+
+</html>

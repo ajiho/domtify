@@ -1,8 +1,6 @@
-import { fn } from "../core";
+import { fn } from '../core'
 import './each'
 
-
 fn.clone = function (deep = false) {
-    return this.map(item => item?.cloneNode(deep))
+  return this.map((item) => item?.cloneNode(deep))
 }
-
