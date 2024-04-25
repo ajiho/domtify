@@ -137,9 +137,11 @@ var d = (function () {
     return Number.isInteger(index) ? this.result.at(index) : this.result;
   };
 
-  const flatArgs = args => {
+  //参数消毒
+  const sanitize = args => {
     const uniqueMap = new Map();
-    return (Array.isArray(args) ? args : [args]).flat(Infinity).flatMap(item => {
+    return (Array.isArray(args) ? args : [args] //不是数组转换成数组
+    ).flat(Infinity).flatMap(item => {
       if (item instanceof Domtify) {
         return item.result;
       }
@@ -165,59 +167,74 @@ var d = (function () {
     });
   };
 
-  function domManip(collection, args, callback, reverse) {
+  const Default = {
+    //是否反转参数
+    reverse: false,
+    //是否克隆
+    cloneNode: true
+  };
+  const createHtmlNode = htmlStr => {
+    const div = document.createElement('div');
+    div.innerHTML = htmlStr;
+    return div.firstElementChild;
+  };
+
+  //collection就是domtify实例
+  const domManip = (collection, args, callback, options) => {
+    //参数合并
+    options = {
+      ...Default,
+      ...options
+    };
+
     //参数静态化不过不这样的话，如果是HTMLCollection如果动态添加后，在遍历的时候它数组长度会改变，遍历逻辑会错乱
     let firstParam = args[0];
     let firstParamIsFunction = isFunction(firstParam);
     let fnResult = {};
     if (firstParamIsFunction) {
       collection.each((item, index) => {
-        fnResult[index] = flatArgs(firstParam.call(item, index, item.textContent));
+        fnResult[index] = sanitize(firstParam.call(item, index, item.textContent));
       });
     }
     Object.freeze(fnResult); //冻结该对象防止被更改
 
-    let collectiona = flatArgs(args);
-    if (reverse === true) {
-      collectiona = collectiona.reverse();
+    let flatArgs = sanitize(args);
+    if (options.reverse) {
+      flatArgs = flatArgs.reverse();
     }
     let last = false;
     return collection.each((elem, index) => {
       if (firstParamIsFunction) {
-        collectiona = fnResult[index];
-        if (reverse === true) {
-          collectiona = collectiona.reverse();
+        flatArgs = fnResult[index]; //这里就表示直接取上面函数的静态化参数了
+        if (options.reverse) {
+          flatArgs = flatArgs.reverse();
         }
       }
       last = index === collection.length - 1 ? true : false;
-      collectiona.forEach(item => {
-        let temp;
+
+      //参数遍历
+      flatArgs.forEach(item => {
+        //回调的参数
+        let node;
         //1.字符串
         if (isString(item)) {
           if (isHtmlString(item)) {
+            //创建dom
             //htmlString
-
-            const tempElement = document.createElement('div');
-            tempElement.innerHTML = item;
-            temp = tempElement.firstElementChild;
+            node = createHtmlNode(item);
           } else {
             //textNode
-            temp = document.createTextNode(item);
+            node = document.createTextNode(item);
           }
         } else if (isElem(item) || item instanceof Text) {
-          //元素
-          if (last === true) {
-            temp = item;
-          } else {
-            temp = item.cloneNode(true);
-          }
+          //如果克隆选项启用，且是最后一个才进行克隆
+          node = options.cloneNode && !last ? item.cloneNode(true) : item;
         }
-
         //调用方法
-        callback.call(collectiona, elem, temp);
+        callback.call(elem, node);
       });
     });
-  }
+  };
 
   fn.append = function (...args) {
     return domManip(this, args, function (elem, temp) {
@@ -331,12 +348,14 @@ var d = (function () {
   };
 
   fn.replaceWith = function (...args) {
-    return domManip(this, args, function (elem, temp) {
-      const parent = elem.parentNode;
+    return domManip(this, args, function (node) {
+      const parent = this.parentNode;
       if (parent) {
-        parent.replaceChild(temp, elem);
+        parent.replaceChild(node, this);
       }
-    }, true);
+    }, {
+      cloneNode: false
+    });
   };
 
   return domtify;

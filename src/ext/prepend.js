@@ -6,11 +6,11 @@ fn.prepend = function (...args) {
   return domManip(
     this,
     args,
-    function (elem, temp) {
-      // console.log(elem, temp);
-
-      elem.insertBefore(temp, elem.firstChild)
+    function (node) {
+      this.insertBefore(node, this.firstChild)
     },
-    true,
+    {
+      reverse: true,
+    },
   )
 }

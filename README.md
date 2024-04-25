@@ -12,7 +12,7 @@
 
  - [x] [add](http://api.jquery.com/add/)
  - [x] [addClass](http://api.jquery.com/addClass/)
- - [ ] [after](http://api.jquery.com/after/)
+ - [x] [after](http://api.jquery.com/after/)
  - [x] [append](http://api.jquery.com/append/)
  - [ ] [appendTo](http://api.jquery.com/appendTo/)
  - [x] [attr](http://api.jquery.com/attr/)

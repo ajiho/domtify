@@ -5,13 +5,14 @@ fn.replaceWith = function (...args) {
   return domManip(
     this,
     args,
-    function (elem, temp) {
-      const parent = elem.parentNode
-
+    function (node) {
+      const parent = this.parentNode
       if (parent) {
-        parent.replaceChild(temp, elem)
+        parent.replaceChild(node, this)
       }
     },
-    true,
+    {
+      cloneNode: false,
+    },
   )
 }

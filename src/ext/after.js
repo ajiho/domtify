@@ -5,11 +5,13 @@ fn.after = function (...args) {
   return domManip(
     this,
     args,
-    function (elem, temp) {
-      if (elem.parentNode) {
-        elem.parentNode.insertBefore(temp, elem.nextSibling)
+    function (node) {
+      if (this.parentNode) {
+        this.parentNode.insertBefore(node, this.nextSibling)
       }
     },
-    true,
+    {
+      reverse: true,
+    },
   )
 }

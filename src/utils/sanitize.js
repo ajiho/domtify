@@ -1,8 +1,9 @@
 import { Domtify } from '../core'
 
-const flatArgs = (args) => {
+//参数消毒
+const sanitize = (args) => {
   const uniqueMap = new Map()
-  return (Array.isArray(args) ? args : [args])
+  return (Array.isArray(args) ? args : [args]) //不是数组转换成数组
     .flat(Infinity)
     .flatMap((item) => {
       if (item instanceof Domtify) {
@@ -31,4 +32,4 @@ const flatArgs = (args) => {
     })
 }
 
-export default flatArgs
+export default sanitize

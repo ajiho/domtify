@@ -9,6 +9,7 @@
 
 <body>
 
+    
     <div class="container">
         <div class="inner first">Hello</div>
         <div class="inner second">And</div>
@@ -22,11 +23,34 @@
     <script src="umbrella.js"></script>
     <script>
         // $("div.second").replaceWith("<h2>New heading</h2>");
-        // $( "div.third" ).replaceWith( $( ".first" ) );
+        // const res = $( "div.third" ).replaceWith( $( ".first" ) );
+        // console.log(res);
+
+
+        // const res2 = $("div.third").replaceWith(function (index, html) {
+        //     console.log(index);
+        //     console.log(html);
+        //     return $(".first");
+        //     // return `<p>this is p</p>`
+        // });
+
+
+        // console.log(res2);
+
 
 
         // d("div.second").replaceWith("<h2>New heading</h2>");
-        // d( "div.third" ).replaceWith( d( ".first" ) );
+        // const res2 = d( "div.third" ).replaceWith( d( ".first" ) );
+
+        // console.log(res2);
+
+        const res2 = d("div.third").replaceWith(function (index, html) {
+            console.log(index);
+            console.log(html);
+            return d(".first");
+        });
+
+        console.log(res2);
 
     </script>
 </body>
