@@ -15,5 +15,10 @@ import './ext/prepend'
 import './ext/after'
 import './ext/before'
 import './ext/replaceWith'
+import './ext/next'
+import './ext/prev'
+import './ext/prevAll'
+import './ext/prevUntil'
+import './ext/is'
 
 export default domtify

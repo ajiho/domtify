@@ -102,18 +102,23 @@ fn.map = function (callback) {
 
 fn.filter = function (selector) {
   //默认是选择器
-  let callbackFn = item => item == null ? void 0 : item.matches(selector || '*');
+  let callbackFn = (index, item) => item == null ? void 0 : item.matches(selector || '*');
 
   //函数
   if (typeof selector === 'function') callbackFn = selector;
 
   //domtify实例
   if (selector instanceof domtify) {
-    callbackFn = item => selector.result.indexOf(item) !== -1;
+    callbackFn = (index, item) => selector.result.indexOf(item) !== -1;
+  }
+
+  //element元素
+  if (selector instanceof Element) {
+    callbackFn = (index, item) => this.result.indexOf(selector) !== -1;
   }
 
   //调用数组原生的filter过滤
-  this.result = this.result.filter((item, index, array) => callbackFn.call(item, item, index, array));
+  this.result = this.result.filter((item, index) => callbackFn.call(item, index, item));
   return this;
 };
 
@@ -234,9 +239,9 @@ const domManip = (collection, args, callback, options) => {
 };
 
 fn.append = function (...args) {
-  return domManip(this, args, function (elem, temp) {
-    elem.appendChild(temp);
-  }, false);
+  return domManip(this, args, function (node) {
+    this.appendChild(node);
+  });
 };
 
 domtify.extend = function () {
@@ -312,8 +317,8 @@ domtify.extend = function () {
   return target;
 };
 
-fn.clone = function (deep = false) {
-  return this.map(item => item == null ? void 0 : item.cloneNode(deep));
+fn.clone = function () {
+  return this.map(item => item == null ? void 0 : item.cloneNode(true));
 };
 
 fn.add = function (selector, context) {
@@ -321,27 +326,31 @@ fn.add = function (selector, context) {
 };
 
 fn.prepend = function (...args) {
-  return domManip(this, args, function (elem, temp) {
-    // console.log(elem, temp);
-
-    elem.insertBefore(temp, elem.firstChild);
-  }, true);
+  return domManip(this, args, function (node) {
+    this.insertBefore(node, this.firstChild);
+  }, {
+    reverse: true
+  });
 };
 
 fn.after = function (...args) {
-  return domManip(this, args, function (elem, temp) {
-    if (elem.parentNode) {
-      elem.parentNode.insertBefore(temp, elem.nextSibling);
+  return domManip(this, args, function (node) {
+    if (this.parentNode) {
+      this.parentNode.insertBefore(node, this.nextSibling);
     }
-  }, true);
+  }, {
+    reverse: true
+  });
 };
 
 fn.before = function (...args) {
-  return domManip(this, args, function (elem, temp) {
-    if (elem.parentNode) {
-      elem.parentNode.insertBefore(temp, elem);
+  return domManip(this, args, function (node) {
+    if (this.parentNode) {
+      this.parentNode.insertBefore(node, this);
     }
-  }, true);
+  }, {
+    reverse: true
+  });
 };
 
 fn.replaceWith = function (...args) {
@@ -353,6 +362,45 @@ fn.replaceWith = function (...args) {
   }, {
     cloneNode: false
   });
+};
+
+const getSibling = (cur, dir) => {
+  // 根据方向获取下一个或上一个兄弟节点
+  cur = cur[dir];
+  // 如果存在兄弟节点且兄弟节点的节点类型不是元素节点，则继续向下一个兄弟节点移动
+  while (cur && cur.nodeType !== 1) {
+    cur = cur[dir];
+  }
+  // 返回找到的兄弟节点（或者是 null）
+  return cur;
+};
+
+fn.next = function (selector) {
+  return this.map(item => {
+    return getSibling(item, 'nextSibling');
+  }).filter(selector);
+};
+
+fn.prev = function (selector) {
+  return this.map(item => {
+    return getSibling(item, 'previousSibling');
+  }).filter(selector);
+};
+
+fn.prevAll = function () {
+  return this.map(item => {
+    return getSibling(item, 'previousSibling');
+  }).filter(selector);
+};
+
+fn.prevUntil = function () {
+  return this.map(item => {
+    return getSibling(item, 'previousSibling');
+  }).filter(selector);
+};
+
+fn.is = function (selector) {
+  return this.filter(selector).length > 0;
 };
 
 export { domtify as default };

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>list item 1</li>
+        <li>list item 2</li>
+        <li class="third-item">list item 3</li>
+        <li>list item 4</li>
+        <li>list item 5</li>
+    </ul>
+
+    <p>Hello</p>
+    <p class="selected">Hello Again</p>
+    <div><span>And Again</span></div>
+
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+        // console.log($("li").next());
+        console.log($("p").next(".selected"));
+        // console.log($("li.third-item").next());
+
+
+        console.log(d("li").next());
+        // console.log(d("p").next(".selected"));
+        // console.log(d("li.third-item").next());
+
+    </script>
+</body>
+
+</html>

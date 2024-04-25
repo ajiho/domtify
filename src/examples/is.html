@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- <ul>
+        <li>list <strong>item 1</strong></li>
+        <li class="abc"><span>list item 2</span></li>
+        <li>list item 3</li>
+    </ul> -->
+
+    <!-- <ul>
+        <li><strong>list</strong> item 1 - one strong tag</li>
+        <li class="abc">
+            <strong>list</strong> item
+            <strong>2</strong> -
+            two
+            <span>strong tags</span>
+        </li>
+        <li>list item 3</li>
+        <li>list item 4</li>
+        <li>list item 5</li>
+    </ul> -->
+
+    <ul id="browsers">
+        <li>Chrome</li>
+        <li class="abc">Safari</li>
+        <li class="abc2">Firefox</li>
+        <li class="abc3">Opera</li>
+    </ul>
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+        //css选择器
+        // console.log($('.abc').is("li"));
+        // console.log(d('.abc').is("li"));
+
+
+        //函数
+        // const res = $('.abc').is(function (index, element,fdsfs) {
+
+        //     console.log(index,element,fdsfs);
+        //     return element.querySelectorAll('strong').length === 2;
+        // });
+        // console.log(res);
+
+
+        // const res = d('.abc').is(function (index, element, fdsfs) {
+        //     return element.querySelectorAll('strong').length === 2;
+        // });
+        // console.log(res);
+
+
+
+
+        //jquery对象
+        // console.log($('.abc3').is($("#browsers li:nth-child(2n)")));
+        // console.log(d('.abc3').is(d("#browsers li:nth-child(2n)")));
+
+
+        //element元素
+        // console.log($('.abc3').is(document.querySelector('#browsers .abc2')));
+        // console.log(d('.abc3').is(document.querySelector('#browsers .abc2')));
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
