@@ -22,10 +22,20 @@
     <script>
 
         // $( ".inner" ).after( "<p>Test</p>" );
-        // $(".inner").after($('h2'),'123',"<p>Test</p>");
+        var start = performance.now();
+        $(".inner").after($('h2'), '123', "<p>Test</p>");
+        var end = performance.now();
+        console.log("Your library method took " + (end - start) + " milliseconds.");
+
+
 
         // d( ".inner" ).after( "<p>Test</p>" );
-        d( ".inner" ).after(d('h2'),"123456","<p>Test</p>");
+
+        var start2 = performance.now();
+        d(".inner").after(d('h2'), "123456", "<p>Test</p>");
+        var end2 = performance.now();
+        console.log("Your library method took " + (end2 - start2) + " milliseconds.");
+
 
 
     </script>

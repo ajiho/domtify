@@ -1,5 +1,5 @@
 import { fn } from '../core'
-import { domManip } from '../utils/domManip'
+import { domManip } from '../utils/domManipulation'
 
 fn.before = function (...args) {
   return domManip(

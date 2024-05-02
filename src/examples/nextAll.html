@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 80px;
+            height: 80px;
+            background: #abc;
+            border: 2px solid black;
+            margin: 10px;
+            float: left;
+        }
+
+        div.after {
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul>
+        <li>list item 1</li>
+        <li>list item 2</li>
+        <li class="third-item">list item 3</li>
+        <li class="aa">list item 4</li>
+        <li>list item 5</li>
+    </ul>
+
+
+    <div>first</div>
+    <div>sibling<div>child</div>
+    </div>
+    <div>sibling</div>
+    <div>sibling</div>
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+
+
+        // console.log($("li.third-item").nextAll('.aa'));
+        console.log(d("li.third-item").nextAll());
+
+
+        // //别的方式过滤无效
+        // console.log($("li.third-item").nextAll(document.querySelector('.aa')));
+        // console.log(d("li.third-item").nextAll(document.querySelector('.aa')));
+
+
+
+        // $("div").first().nextAll().addClass("after");
+        // d("div").first().nextAll().addClass("after");
+
+
+
+
+
+    </script>
+</body>
+
+</html>

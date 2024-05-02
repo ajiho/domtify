@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <dl>
+        <dt id="term-1">term 1</dt>
+        <dd>definition 1-a</dd>
+        <dd>definition 1-b</dd>
+        <dd>definition 1-c</dd>
+        <dd>definition 1-d</dd>
+        <dt id="term-2">term 2</dt>
+        <dd>definition 2-a</dd>
+        <dd>definition 2-b</dd>
+        <dd>definition 2-c</dd>
+        <dt id="term-3">term 3</dt>
+        <dd>definition 3-a</dd>
+        <dd>definition 3-b</dd>
+    </dl>
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+        // //选择器
+        // console.log($("#term-2").nextUntil("dt"));
+        // console.log(d("#term-2").nextUntil("dt"));
+
+        // //元素或者jq对象
+        // console.log($("#term-2").nextUntil(document.querySelector('#term-3')));
+        // console.log($("#term-2").nextUntil($('#term-3')));
+
+        // console.log(d("#term-2").nextUntil(document.querySelector('#term-3')));
+        // console.log(d("#term-2").nextUntil(d('#term-3')));
+
+
+        //第二个可选参数
+        // console.log($("#term-1").nextUntil(document.getElementById("term-3")));
+        // console.log($("#term-1").nextUntil(document.getElementById("term-3"), "dd"));
+
+
+        // console.log(d("#term-1").nextUntil(document.getElementById("term-3")));
+        // console.log(d("#term-1").nextUntil(document.getElementById("term-3"), "dd"));
+
+    </script>
+</body>
+
+</html>

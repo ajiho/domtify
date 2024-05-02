@@ -20,6 +20,9 @@ var d = (function () {
   const isString = value => {
     return typeof value === 'string';
   };
+  const isNumber = value => {
+    return typeof value === 'number';
+  };
   const isHtmlString = str => {
     return str.trim().startsWith('<');
   };
@@ -33,6 +36,11 @@ var d = (function () {
     return obj instanceof cls;
   };
   const arrUnique = arr => [...new Set(arr)];
+  const createElementHTML = htmlStr => {
+    const div = document.createElement('div');
+    div.innerHTML = htmlStr;
+    return div.firstElementChild;
+  };
 
   class Domtify {
     get length() {
@@ -178,14 +186,7 @@ var d = (function () {
     //是否克隆
     cloneNode: true
   };
-  const createHtmlNode = htmlStr => {
-    const div = document.createElement('div');
-    div.innerHTML = htmlStr;
-    return div.firstElementChild;
-  };
-
-  //collection就是domtify实例
-  const domManip = (collection, args, callback, options) => {
+  const domManip = (domtifyObj, args, callback, options) => {
     //参数合并
     options = {
       ...Default,
@@ -197,7 +198,7 @@ var d = (function () {
     let firstParamIsFunction = isFunction(firstParam);
     let fnResult = {};
     if (firstParamIsFunction) {
-      collection.each((item, index) => {
+      domtifyObj.each((item, index) => {
         fnResult[index] = sanitize(firstParam.call(item, index, item.textContent));
       });
     }
@@ -208,14 +209,14 @@ var d = (function () {
       flatArgs = flatArgs.reverse();
     }
     let last = false;
-    return collection.each((elem, index) => {
+    return domtifyObj.each((elem, index) => {
       if (firstParamIsFunction) {
         flatArgs = fnResult[index]; //这里就表示直接取上面函数的静态化参数了
         if (options.reverse) {
           flatArgs = flatArgs.reverse();
         }
       }
-      last = index === collection.length - 1 ? true : false;
+      last = index === domtifyObj.length - 1 ? true : false;
 
       //参数遍历
       flatArgs.forEach(item => {
@@ -226,7 +227,7 @@ var d = (function () {
           if (isHtmlString(item)) {
             //创建dom
             //htmlString
-            node = createHtmlNode(item);
+            node = createElementHTML(item);
           } else {
             //textNode
             node = document.createTextNode(item);
@@ -328,6 +329,10 @@ var d = (function () {
     return domtify(arrUnique([...this.get(), ...domtify(selector, context).get()]));
   };
 
+  fn.is = function (selector) {
+    return this.filter(selector).length > 0;
+  };
+
   fn.prepend = function (...args) {
     return domManip(this, args, function (node) {
       this.insertBefore(node, this.firstChild);
@@ -367,43 +372,106 @@ var d = (function () {
     });
   };
 
-  const getSibling = (cur, dir) => {
-    // 根据方向获取下一个或上一个兄弟节点
-    cur = cur[dir];
-    // 如果存在兄弟节点且兄弟节点的节点类型不是元素节点，则继续向下一个兄弟节点移动
-    while (cur && cur.nodeType !== 1) {
-      cur = cur[dir];
+  const isNeedPx = property => {
+    return /^[a-z]/.test(property) && /^(?:Border(?:Top|Right|Bottom|Left)?(?:Width|)|(?:Margin|Padding)?(?:Top|Right|Bottom|Left)?|(?:Min|Max)?(?:Width|Height))$/.test(property[0].toUpperCase() + property.slice(1));
+  };
+
+  const camelCase = string => {
+    return string.replace(/-([a-z])/g, (match, char) => {
+      return char.toUpperCase();
+    });
+  };
+
+  const addPx = (property, value) => {
+    //数字，或者数字字符串
+    return (isNumber(value) || /^\d+$/.test(value)) && isNeedPx(camelCase(property)) ? value + 'px' : value;
+  };
+  fn.css = function (property, value) {
+    //设置
+    if (isString(value) || isNumber(value)) {
+      return this.each(elem => {
+        elem.style[property] = addPx(property, value);
+      });
     }
-    // 返回找到的兄弟节点（或者是 null）
-    return cur;
+
+    //设置
+    if (isFunction(value)) {
+      return this.each((elem, index) => {
+        const oldValue = getComputedStyle(elem).getPropertyValue(property);
+        elem.style[property] = addPx(property, value.call(elem, index, oldValue));
+      });
+    }
+
+    //设置
+    if (isPlainObject(property)) {
+      return this.each(elem => {
+        for (const [key, value] of Object.entries(property)) {
+          elem.style[key] = addPx(key, value);
+        }
+      });
+    }
+  };
+
+  const selectSibling = (domtifyObj, direction) => {
+    let matched = [];
+    let prop = direction + "ElementSibling";
+    domtifyObj.each(elem => {
+      let el = elem[prop];
+      if (el) {
+        matched.push(el);
+      }
+    });
+    return matched;
+  };
+
+  const traverseFilter = (arr, selector) => {
+    let matched = arr;
+
+    //选择器过滤
+    if (selector && typeof selector === "string") {
+      matched = domtify(matched).filter(selector).get();
+    }
+
+    //去重
+    if (matched.length > 1) {
+      matched = arrUnique(matched);
+    }
+    return domtify(matched);
   };
 
   fn.next = function (selector) {
-    return this.map(item => {
-      return getSibling(item, 'nextSibling');
-    }).filter(selector);
+    return traverseFilter(selectSibling(this, 'next'), selector);
   };
 
-  fn.prev = function (selector) {
-    return this.map(item => {
-      return getSibling(item, 'previousSibling');
-    }).filter(selector);
+  const selectElementsByProp = (domtifyObj, prop, until) => {
+    let matched = [];
+    domtifyObj.each(elem => {
+      while ((elem = elem[prop]) && elem.nodeType !== 9) {
+        if (elem.nodeType === 1) {
+          //1:表示是一个element元素https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType#node.element_node
+
+          if (until && domtify(elem).is(until)) break;
+          matched.push(elem);
+        }
+      }
+    });
+    return matched;
   };
 
-  fn.prevAll = function () {
-    return this.map(item => {
-      return getSibling(item, 'previousSibling');
-    }).filter(selector);
+  fn.nextAll = function (selector) {
+    return traverseFilter(selectElementsByProp(this, "nextSibling"), selector);
   };
 
-  fn.prevUntil = function () {
-    return this.map(item => {
-      return getSibling(item, 'previousSibling');
-    }).filter(selector);
+  fn.nextUntil = function (selector, filter) {
+    return traverseFilter(selectElementsByProp(this, "nextSibling", selector), filter);
   };
 
-  fn.is = function (selector) {
-    return this.filter(selector).length > 0;
+  fn.parents = function (selector) {
+    return traverseFilter(selectElementsByProp(this, 'parentNode'), selector);
+  };
+
+  fn.parentsUntil = function (selector, filter) {
+    return traverseFilter(selectElementsByProp(this, 'parentNode', selector), filter);
   };
 
   return domtify;

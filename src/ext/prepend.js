@@ -1,6 +1,6 @@
 import { fn } from '../core'
 
-import { domManip } from '../utils/domManip'
+import { domManip } from '../utils/domManipulation'
 
 fn.prepend = function (...args) {
   return domManip(

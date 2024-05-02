@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            float: left;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <span id="result">&nbsp;</span>
+    <div style="background-color:blue;"></div>
+    <div id="abc" style="background-color:#17a932;"></div>
+    <div style="background-color:#123456;"></div>
+    <div style="background-color:#f11;"></div>
+
+
+    <script src="../dist/domtify.js"></script>
+    <script src="sprint.js"></script>
+    <script src="jquery.js"></script>
+    <script src="cash.js"></script>
+    <script src="umbrella.js"></script>
+    <script>
+
+
+
+        // document.querySelector('#abc').style['margin-top'] = "100px"
+
+
+
+
+
+        //属性名称, 值
+
+        // console.log($('#abc').css("height", '100'));
+        // console.log(d('#abc').css("height", '100'));
+
+
+        //属性名称, 函数
+        // $('#abc').css("height", function (index, value) {
+        //     console.log(index, value, this);
+
+        //     return parseFloat(value) * 1.2;
+
+        // })
+
+
+        // d('#abc').css("height", function (index, value) {
+        //     console.log(index, value, this);
+
+        //     return parseFloat(value) * 1.2;
+
+        // })
+
+
+
+        //对象
+        // $('#abc').css({ color: '#f01', 'border-color': '#f02', 'height': "100" })
+        d('#abc').css({ color: '#f01', 'border-color': '#f02', 'height': "100" })
+
+
+
+    </script>
+</body>
+
+</html>

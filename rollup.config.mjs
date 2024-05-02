@@ -3,8 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel';
 import stripBanner from 'rollup-plugin-strip-banner';
-import getBanner,{pkgJson} from './build/banner.mjs';
-
+import getBanner, { pkgJson } from './build/banner.mjs';
 
 
 const plugins = [
@@ -47,7 +46,8 @@ const base = {
     sourcemap: true,//方便调试
 }
 
-const input = 'src/index.js'
+//入口文件
+let input = 'src/index.js'
 
 config.push({
     input,
@@ -66,7 +66,6 @@ if (process.env.NODE_ENV === 'production') {
     file = file.replace(/\.js$/, '.min.js')
 }
 
-
 config.push({
     input,
     output: {
@@ -76,6 +75,7 @@ config.push({
     },
     plugins
 })
+
 
 
 export default config;

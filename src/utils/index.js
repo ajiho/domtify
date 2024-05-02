@@ -13,6 +13,10 @@ const isString = (value) => {
   return typeof value === 'string'
 }
 
+const isNumber = (value) => {
+  return typeof value === 'number'
+}
+
 const isHtmlString = (str) => {
   return str.trim().startsWith('<')
 }
@@ -31,8 +35,15 @@ const isInstance = (obj, cls) => {
 
 const arrUnique = (arr) => [...new Set(arr)]
 
+
 const isInPage = (node) => {
   return node === document.body ? false : document.body.contains(node)
+}
+
+const createElementHTML = (htmlStr) => {
+  const div = document.createElement('div')
+  div.innerHTML = htmlStr
+  return div.firstElementChild
 }
 
 export {
@@ -42,7 +53,9 @@ export {
   isInstance,
   isFunction,
   isString,
+  isNumber,
   isHtmlString,
   isElem,
   isPlainObject,
+  createElementHTML
 }

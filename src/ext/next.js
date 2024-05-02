@@ -1,11 +1,11 @@
 import { fn } from '../core'
-import getSibling from '../utils/getSibling'
 
-import './map'
-import './filter'
+import selectSibling from '../utils/selectSibling'
+import traverseFilter from '../utils/traverseFilter';
+
 
 fn.next = function (selector) {
-  return this.map((item) => {
-    return getSibling(item, 'nextSibling')
-  }).filter(selector)
+    return traverseFilter(selectSibling(this, 'next'), selector);
 }
+
+
